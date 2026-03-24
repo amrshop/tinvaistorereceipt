@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tin Vai Store Admin - Ultra Flex</title>
+    <title>Tin Vai Store Admin - Fixed</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
@@ -12,24 +12,13 @@
         body { font-family: 'Inter', sans-serif; background: #0b0f1a; color: #fff; height: 100vh; overflow: hidden; }
         .receipt-font { font-family: 'Space Mono', monospace; }
         
-        /* মেমোর ডিজাইন - ১০০ আইটেমের জন্য ফ্লেক্সিবল করা হয়েছে */
         #receiptDesign { 
-            width: 794px; 
-            min-height: 1123px; /* A4 সাইজ বেস */
-            height: auto; /* আইটেম বাড়লে অটো লম্বা হবে */
-            background: #fff; 
-            color: #000; 
-            padding: 40px;
-            position: fixed; 
-            top: -99999px; /* স্ক্রিনের বাইরে রেন্ডার হবে */
-            border: 15px solid #166534;
-            display: flex;
-            flex-direction: column;
+            width: 794px; min-height: 1123px; height: auto; background: #fff; color: #000; padding: 40px;
+            position: fixed; top: -99999px; border: 15px solid #166534; display: flex; flex-direction: column;
         }
 
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 2px solid #000; padding: 10px; font-weight: bold; font-size: 15px; }
-        
         .admin-container { height: 100vh; overflow-y: auto; padding-bottom: 100px; }
         .digital-clock { font-family: 'Space Mono', monospace; color: #22c55e; }
         #processingOverlay { display: none; background: rgba(0,0,0,0.95); z-index: 10000; }
@@ -42,15 +31,15 @@
 
 <div id="loginOverlay" class="fixed inset-0 bg-black z-[9999] flex items-center justify-center">
     <div class="bg-gray-900 p-8 rounded-3xl border border-gray-800 w-80 text-center">
-        <h2 class="text-green-500 font-black mb-6 uppercase">Admin Access</h2>
-        <input type="password" id="passInput" class="w-full p-3 bg-gray-800 rounded-xl mb-6 text-center text-2xl tracking-[0.5em] outline-none border border-gray-700 focus:border-green-500 text-white">
+        <h2 class="text-green-500 font-black mb-6 uppercase tracking-widest">Admin Access</h2>
+        <input type="password" id="passInput" class="w-full p-3 bg-gray-800 rounded-xl mb-6 text-center text-2xl tracking-[0.5em] outline-none border border-gray-700 text-white">
         <button onclick="checkPass()" class="w-full bg-green-600 py-3 rounded-xl font-bold hover:bg-green-500 transition">LOGIN</button>
     </div>
 </div>
 
 <div id="processingOverlay" class="fixed inset-0 flex flex-col items-center justify-center">
     <div class="text-green-500 text-9xl font-black mb-4 animate-bounce" id="countdown">10</div>
-    <p class="text-2xl font-bold tracking-widest text-white uppercase">মেমো জেনারেট হচ্ছে...</p>
+    <p class="text-2xl font-bold tracking-widest text-white uppercase">মেমো তৈরি হচ্ছে...</p>
 </div>
 
 <div id="mainApp" class="hidden admin-container">
@@ -62,6 +51,17 @@
     </div>
 
     <div class="max-w-lg mx-auto px-4 space-y-6">
+        <div class="bg-gray-900 p-4 rounded-2xl border border-gray-700 shadow-lg">
+            <div class="flex gap-2">
+                <input type="text" id="searchInput" placeholder="TVS-XXXXXX" class="flex-1 p-3 bg-gray-800 rounded-xl outline-none text-white border border-gray-700">
+                <button onclick="searchMemo()" class="bg-blue-600 px-6 py-3 rounded-xl font-bold text-white">সার্চ</button>
+            </div>
+            <div id="searchOptions" class="hidden mt-4 flex gap-2">
+                <button onclick="quickDownload()" class="flex-1 bg-green-700 py-2 rounded-lg font-bold text-sm text-white">Download</button>
+                <button onclick="editMemo()" class="flex-1 bg-yellow-600 py-2 rounded-lg font-bold text-sm text-white">Edit Memo</button>
+            </div>
+        </div>
+
         <div class="bg-gray-900 p-6 rounded-3xl space-y-4 border border-gray-800 shadow-2xl mb-10">
             <input type="text" id="cName" placeholder="ক্রেতার নাম" class="w-full p-4 bg-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-green-500 text-white">
             <input type="text" id="cPhone" placeholder="ফোন নম্বর" class="w-full p-4 bg-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-green-500 text-white">
@@ -74,9 +74,8 @@
                 </div>
             </div>
 
-            <button onclick="addRow()" class="w-full py-3 border-2 border-dashed border-gray-700 text-gray-400 rounded-xl font-bold hover:border-green-500 hover:text-green-500 transition">+ পণ্য যোগ করুন (১০০ পর্যন্ত পারবেন)</button>
-            
-            <button id="finalBtn" onclick="confirmDialog()" class="w-full bg-green-600 py-5 rounded-2xl font-black text-2xl mt-6 shadow-xl active:scale-95 transition">ফিনিশ ও ডাউনলোড</button>
+            <button onclick="addRow()" class="w-full py-3 border-2 border-dashed border-gray-700 text-gray-400 rounded-xl font-bold">+ আরও পণ্য</button>
+            <button id="finalBtn" onclick="confirmDialog()" class="w-full bg-green-600 py-5 rounded-2xl font-black text-2xl mt-6 shadow-xl active:scale-95 transition text-white">ফিনিশ ও ডাউনলোড</button>
         </div>
     </div>
 </div>
@@ -104,7 +103,7 @@
     <table>
         <thead class="bg-green-800 text-white">
             <tr>
-                <th class="text-left py-3 px-4">পণ্যের বিবরণ (Description)</th>
+                <th class="text-left py-3 px-4">পণ্যের বিবরণ</th>
                 <th class="text-right w-40 py-3 px-4">মূল্য (টাকা)</th>
             </tr>
         </thead>
@@ -113,7 +112,7 @@
 
     <div class="mt-8 flex justify-between items-end px-4 mb-10">
         <div class="font-black space-y-1">
-            <p class="text-2xl">মোট পদ (Total Items): <span id="rTotalQty">0</span></p>
+            <p class="text-2xl">মোট পদ: <span id="rTotalQty">0</span></p>
             <p class="text-5xl text-green-800">সর্বমোট: <span id="rTotalAmount">0</span> TK</p>
         </div>
         <div class="w-32 h-32 border-4 border-dotted border-green-400 rounded-full flex items-center justify-center -rotate-12 opacity-30">
@@ -125,13 +124,12 @@
         <div class="w-48 border-t-2 border-black text-center text-[12px] font-black pt-2 uppercase">Packing Staff Sign</div>
         <div class="w-48 border-t-2 border-black text-center text-[12px] font-black pt-2 uppercase">Authorized Sign</div>
     </div>
-    
-    <p class="text-center text-[12px] text-gray-500 border-t pt-4 font-bold italic">System by Nazrul AI | Mobile: 01727003670</p>
+    <p class="text-center text-[10px] text-gray-400 mt-4 border-t pt-2">System by Nazrul AI | Mobile: 01727003670</p>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBl7iHeOmB1VxA8Z7UYZz2qKMHPtXZttPs",
@@ -144,6 +142,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    let lastSearchData = null;
 
     function clock() {
         const d = new Date();
@@ -168,16 +167,45 @@
         document.getElementById('itemsList').appendChild(div);
     };
 
+    window.searchMemo = async () => {
+        const id = document.getElementById('searchInput').value.trim();
+        if(!id) return alert("আইডি দিন!");
+        const docSnap = await getDoc(doc(db, "tin_vai_receipts", id));
+        if (docSnap.exists()) {
+            lastSearchData = docSnap.data();
+            document.getElementById('searchOptions').classList.remove('hidden');
+            alert("মেমো পাওয়া গেছে!");
+        } else { alert("পাওয়া যায়নি!"); }
+    };
+
+    window.quickDownload = async () => {
+        updateMemoView(lastSearchData);
+        await downloadNow(lastSearchData.id);
+    };
+
+    window.editMemo = () => {
+        document.getElementById('cName').value = lastSearchData.cName;
+        document.getElementById('cPhone').value = lastSearchData.cPhone;
+        const list = document.getElementById('itemsList');
+        list.innerHTML = "";
+        lastSearchData.items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "item-row flex gap-2 items-center";
+            div.innerHTML = `<input type="text" value="${item.n}" class="item-n flex-1 p-4 bg-gray-800 rounded-xl text-sm text-white">
+                             <input type="number" value="${item.p}" class="item-p w-24 p-4 bg-gray-800 rounded-xl text-sm text-white">
+                             <button onclick="this.parentElement.remove()" class="w-10 h-10 bg-red-600 rounded-full font-black text-white">-</button>`;
+            list.appendChild(div);
+        });
+        document.getElementById('searchOptions').classList.add('hidden');
+    };
+
     window.confirmDialog = () => {
         const names = document.querySelectorAll('.item-n');
         const prices = document.querySelectorAll('.item-p');
         let total = 0, count = 0;
         prices.forEach((p, i) => { if(names[i].value && p.value) { total += parseFloat(p.value); count++; } });
-        
-        if(count === 0) return alert("পণ্য যোগ করুন!");
-        if(confirm(`মোট পদ: ${count}\nমোট টাকা: ${total} TK\n\nআপনি কি মেমোটি ডাউনলোড করতে চান?`)) {
-            generate(total, count);
-        }
+        if(count === 0) return alert("পণ্য দিন!");
+        if(confirm(`মোট পদ: ${count}\nমোট: ${total} TK\nডাউনলোড করবেন?`)) generate(total, count);
     };
 
     async function generate(total, count) {
@@ -186,57 +214,47 @@
         const prices = document.querySelectorAll('.item-p');
         const cName = document.getElementById('cName').value || "নগদ ক্রেতা";
         const cPhone = document.getElementById('cPhone').value || "N/A";
-        
         let items = [];
-        let rows = "";
-        names.forEach((n, i) => { 
-            if(n.value) {
-                items.push({n: n.value, p: prices[i].value});
-                rows += `<tr><td class="text-left px-4 py-2">${n.value}</td><td class="text-right px-4 py-2">${prices[i].value} TK</td></tr>`;
-            }
-        });
+        names.forEach((n, i) => { if(n.value) items.push({n: n.value, p: prices[i].value}); });
 
         const id = "TVS-" + Math.floor(100000 + Math.random() * 900000);
         const dateTime = document.getElementById('liveDate').innerText + " | " + document.getElementById('liveClock').innerText;
 
-        // ভিউ আপডেট
-        document.getElementById('rID').innerText = "MEMO ID: " + id;
-        document.getElementById('rDateTime').innerText = dateTime;
-        document.getElementById('rName').innerText = cName;
-        document.getElementById('rPhone').innerText = cPhone;
-        document.getElementById('rTotalQty').innerText = count;
-        document.getElementById('rTotalAmount').innerText = total;
-        document.getElementById('rTableBody').innerHTML = rows;
+        updateMemoView({id, cName, cPhone, items, total, dateTime});
+        await setDoc(doc(db, "tin_vai_receipts", id), {id, cName, cPhone, items, total, dateTime});
 
-        // ডাটাবেসে সেভ
-        await setDoc(doc(db, "tin_vai_receipts", id), { id, cName, cPhone, items, total, dateTime });
-
-        // ডাউনলোড প্রসেস
         document.getElementById('processingOverlay').style.display = 'flex';
         let s = 10;
         const timer = setInterval(async () => {
-            s--;
-            document.getElementById('countdown').innerText = s;
+            s--; document.getElementById('countdown').innerText = s;
             if(s <= 0) {
                 clearInterval(timer);
                 document.getElementById('successSound').play();
-                
-                const receipt = document.getElementById('receiptDesign');
-                const canvas = await html2canvas(receipt, { 
-                    scale: 2, 
-                    useCORS: true,
-                    scrollY: -window.scrollY,
-                    windowHeight: receipt.scrollHeight 
-                });
-                
-                const link = document.createElement('a');
-                link.download = `tin_vai_store_${id}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                
+                await downloadNow(id);
                 location.reload();
             }
         }, 1000);
+    }
+
+    function updateMemoView(data) {
+        document.getElementById('rID').innerText = "MEMO ID: " + data.id;
+        document.getElementById('rDateTime').innerText = data.dateTime;
+        document.getElementById('rName').innerText = data.cName;
+        document.getElementById('rPhone').innerText = data.cPhone;
+        document.getElementById('rTotalQty').innerText = data.items.length;
+        document.getElementById('rTotalAmount').innerText = data.total;
+        let rows = "";
+        data.items.forEach(item => { rows += `<tr><td class="text-left">${item.n}</td><td class="text-right">${item.p} TK</td></tr>`; });
+        document.getElementById('rTableBody').innerHTML = rows;
+    }
+
+    async function downloadNow(id) {
+        const receipt = document.getElementById('receiptDesign');
+        const canvas = await html2canvas(receipt, { scale: 2, useCORS: true, windowHeight: receipt.scrollHeight });
+        const link = document.createElement('a');
+        link.download = `tin_vai_store_${id}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
     }
 </script>
 
